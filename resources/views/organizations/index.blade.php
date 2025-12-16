@@ -24,6 +24,12 @@
                 <li>
                     <h2>{{ $organization->name }}</h2>
                     <p>{{ $organization->created_at->format('d/m/Y') }}</p>
+                    <form action="{{ route('organizations.destroy', $organization) }}" method="POST"
+                        class="btn btn-danger btn-sm">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">X</button>
+                    </form>
                 </li>
             @endforeach
         </ul>
