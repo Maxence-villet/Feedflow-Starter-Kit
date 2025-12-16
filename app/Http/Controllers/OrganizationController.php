@@ -57,4 +57,8 @@ class OrganizationController extends Controller
     public function edit(Organization $organization): View {
         return view('organizations.edit', compact('organization'));
     }
+
+    public function detail(Organization $organization): View {
+        return view('organizations.detail', compact('organization'));
+    }
 }
