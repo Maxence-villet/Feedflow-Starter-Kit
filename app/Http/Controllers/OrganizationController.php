@@ -13,6 +13,7 @@ use App\Http\Requests\Organization\StoreOrganization;
 use App\Actions\StoreOrganizationAction;
 use App\DTOs\OrganizationDTO;
 use App\Http\Requests\Organization\DeleteOrganization;
+use App\Http\Requests\Organization\UpdateOrganization;
 
 class OrganizationController extends Controller
 {
@@ -42,5 +43,14 @@ class OrganizationController extends Controller
         $organization->delete();
 
         return redirect()->route('organizations.index')->with('success', 'Organization deleted successfully!');
+    }
+
+    public function update(UpdateOrganization $request, Organization $organization){
+
+        $organization->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('organization.index')->with('success', 'Organization updated successfully!');
     }
 }
