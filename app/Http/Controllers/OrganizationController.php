@@ -35,7 +35,9 @@ class OrganizationController extends Controller
     }
 
     public function destroy(Request $request, Organization $organization) {
-        $this->authorize('delete', $organization);
+        if (!auth()->user()->can('delete', $organization)) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $organization->delete();
 
