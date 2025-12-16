@@ -29,7 +29,7 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit">X</button>
-                        <a href="{{ route('organizations.update', $organization) }}">Modifiez</a>
+                        <a href="{{ route('organizations.edit', $organization) }}">Modifiez</a>
                     </form>
                 </li>
             @endforeach

@@ -51,6 +51,10 @@ class OrganizationController extends Controller
             'name' => $request->name,
         ]);
 
-        return redirect()->route('organization.index')->with('success', 'Organization updated successfully!');
+        return redirect()->route('organizations.index')->with('success', 'Organization updated successfully!');
+    }
+
+    public function edit(Organization $organization): View {
+        return view('organizations.edit', compact('organization'));
     }
 }

@@ -11,9 +11,9 @@
     Mettre à jour l'organisation
 </p>
 
-<form action="{{ route('organizations.update') }}" method="POST">
+<form action="{{ route('organizations.update', $organization) }}" method="POST">
     @csrf
-
+    @method('PUT')
     <div>
         <label for="title">Nom de l'organisation :</label>
         <input type="text" id="title" name="name" required>
