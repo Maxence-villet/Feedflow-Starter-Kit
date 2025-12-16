@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Factory;
 use App\Http\Requests\Organization\StoreOrganization;
+use App\Http\Requests\Organization\DeleteOrganization;
 
 class OrganizationController extends Controller
 {
@@ -30,5 +31,13 @@ class OrganizationController extends Controller
 
 
         return redirect()->route('organizations.index', $organization)->with('success', 'Organization created successfully!');
+    }
+
+    public function destroy(Request $request, Organization $organization) {
+        $this->authorize('delete', $organization);
+
+        $organization->delete();
+        
+        return redirect()->route('organizations.index')->with('success', 'Organization deleted successfully!');
     }
 }
