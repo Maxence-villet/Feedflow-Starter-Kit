@@ -37,7 +37,7 @@ class SurveyPolicy
      */
     public function update(User $user, Survey $survey): bool
     {
-        return false;
+        return $user->id === $survey->user_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class SurveyPolicy
      */
     public function delete(User $user, Survey $survey): bool
     {
-        return false;
+        return $user->id === $survey->user_id;
     }
 
     /**
