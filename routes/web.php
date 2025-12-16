@@ -20,6 +20,8 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/organization', [OrganizationController::class, 'index'])->name('organization.index');
+    Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');
+    Route::post('/organizations', [OrganizationController::class, 'store'])->name('organizations.store');
+    Route::get('/organizations', [OrganizationController::class, 'index'])->name('organizations.index');
 });
 require __DIR__.'/auth.php';

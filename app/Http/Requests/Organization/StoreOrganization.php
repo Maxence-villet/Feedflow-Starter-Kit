@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Organization;
 
+use App\Models\Organization;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreOrganization extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreOrganization extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,16 @@ class StoreOrganization extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'min:3', 'max:30', 'string'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Le nom de l\'organisation doit être obligatoire',
+            'name.min' => 'Le nom de l\'organisation doit avoir un minimum de 3 caractères',
+            'name.max' => 'Le nom de l\'organisation doit avoir un maximum de 30 caractères',
         ];
     }
 }

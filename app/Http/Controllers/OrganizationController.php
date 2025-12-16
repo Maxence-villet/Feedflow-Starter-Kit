@@ -8,6 +8,7 @@ use App\Models\Organization;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Factory;
+use App\Http\Requests\Organization\StoreOrganization;
 
 class OrganizationController extends Controller
 {
@@ -21,14 +22,13 @@ class OrganizationController extends Controller
         return view('organizations.create');
     }
 
-    public function store(Request $request) {
-
-        //dd(auth()->user());
+    public function store(StoreOrganization $request) {
         $organization = Organization::create([
             'name'=> $request->name,
             'user_id'=> auth()->id()
         ]);
 
-        return redirect()->route('organizations.index')->with('success', 'Organization created successfully!');
+
+        return redirect()->route('organizations.index', $organization)->with('success', 'Organization created successfully!');
     }
 }
