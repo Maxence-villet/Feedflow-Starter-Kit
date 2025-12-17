@@ -4,6 +4,7 @@ namespace App\Actions\Organization;
 use App\DTOs\OrganizationDTO;
 use App\Models\Organization;
 use Illuminate\Support\Facades\DB;
+use App\Models\Organization;
 
 final class StoreOrganizationAction
 {
@@ -16,11 +17,21 @@ final class StoreOrganizationAction
      */
     public function handle(OrganizationDTO $dto): Organization
     {
+<<<<<<< Updated upstream
         $organisation = Organization::create([
             'name' => $dto->name,
             'user_id' => $dto->user_id
         ]);
 
         return $organisation;
+=======
+
+        $organization = Organization::create([
+            'name'=> $dto->name,
+            'user_id'=> $dto->user_id,
+        ]);
+
+        return $organization;
+>>>>>>> Stashed changes
     }
 }
