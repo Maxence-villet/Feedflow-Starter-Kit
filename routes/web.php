@@ -33,13 +33,20 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-Route::get('/survey', [SurveyController::class, 'index'])->name('survey.index');
+    Route::get('/survey', [SurveyController::class, 'index'])->name('survey.index');
     Route::get('/survey/create', [SurveyController::class, 'create'])->name('survey.create');
     Route::post('/survey', [SurveyController::class, 'store'])->name('survey.store');
     Route::get('/survey/detail/{survey}', [SurveyController::class, 'detail'])->name('survey.detail');
     Route::delete('/survey/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');
     Route::put('/survey/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
     Route::get('/survey/edit/{survey}', [SurveyController::class, 'edit'])->name('survey.edit');
+
+    Route::get('/survey/{survey}/questions', [SurveyController::class, 'show'])->name('survey.questions.index');
+    Route::get('/survey/{survey}/questions/create', [SurveyController::class, 'createQuestion'])->name('survey.questions.create');
+    Route::post('/survey/{survey}/questions', [SurveyController::class, 'storeQuestion'])->name('survey.questions.store');
+    Route::get('/survey/questions/{surveyQuestion}/edit', [SurveyController::class, 'editQuestion'])->name('survey.questions.edit');
+    Route::put('/survey/questions/{surveyQuestion}', [SurveyController::class, 'updateQuestion'])->name('survey.questions.update');
+    Route::delete('/survey/questions/{surveyQuestion}', [SurveyController::class, 'destroyQuestion'])->name('survey.questions.destroy');
 });
 
 Route::get('/public/survey/{id}', [SurveyController::class, 'showPublicById'])->name('survey.public.id');
