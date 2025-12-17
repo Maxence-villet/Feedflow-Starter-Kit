@@ -68,6 +68,14 @@
                         <ul class="list-disc pl-5">
                             @foreach($organizationUsers as $user)
                                 <li> - {{ $user->first_name }} {{ $user->last_name }} ({{ $user->role }})</li>
+
+                                <form action="{{ route('organizations.users.destroy', ['organization' => $organization, 'user' => $user]) }}" method="POST" class="flex items-center">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-sm font-semibold text-red-600 hover:text-red-800 transition p-0 m-0 border-none bg-transparent">
+                                        Remove
+                                    </button>
+                                </form>
                             @endforeach
                         </ul>
                     </div>
