@@ -48,6 +48,16 @@
                                 @method('DELETE')
                                 <button type="submit">Delete</button>
                             </form>
+                            <form 
+                                action="{{ route('survey.answers.store', $item) }}" 
+                                method="POST" 
+                                style="display: inline;"
+                            >
+                                @csrf
+                                <button type="submit">
+                                    {{ $item->notification ? 'Disable' : 'Enable' }} Notifications
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

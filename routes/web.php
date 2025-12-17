@@ -40,6 +40,7 @@ Route::get('/survey', [SurveyController::class, 'index'])->name('survey.index');
     Route::delete('/survey/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');
     Route::put('/survey/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
     Route::get('/survey/edit/{survey}', [SurveyController::class, 'edit'])->name('survey.edit');
+    Route::post('/survey/notify/{survey}', [SurveyController::class, 'swapNotification'])->name('survey.answers.store');
 });
 
 require __DIR__.'/auth.php';

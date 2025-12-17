@@ -62,4 +62,12 @@ class SurveyController extends Controller
         $survey = Survey::where('id', $id)->first();
         return view('survey.detail', compact('survey'));
     }
+
+    public function swapNotification(Survey $survey)
+    {
+        $survey->notification = !$survey->notification;
+        $survey->save();
+
+        return redirect()->route('survey.index');
+    }
 }
