@@ -63,4 +63,14 @@ class OrganizationPolicy
     {
         return false;
     }
+
+    public function storeOrganizationUser(User $user, Organization $organization): bool
+    {
+        return $user->id === $organization->user_id;
+    }
+
+    public function removeOrganizationUser(User $user, Organization $organization): bool
+    {
+        return $user->id === $organization->user_id;
+    }
 }
