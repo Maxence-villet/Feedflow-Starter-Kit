@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Models\Survey;
+use App\Models\SurveyQuestion;
 use App\Http\Requests\Survey\StoreSurveyRequest;
 use App\Http\Requests\Survey\UpdateSurveyRequest;
+use App\Http\Requests\Survey\StoreSurveyQuestionRequest;
 use App\DTOs\SurveyDTO;
+use App\DTOs\SurveyQuestionDTO;
 use App\Actions\Survey\StoreSurveyAction;
 use App\Actions\Survey\UpdateSurveyAction;
+use App\Actions\Survey\StoreSurveyQuestionAction;
 
 class SurveyController extends Controller
 {
@@ -60,6 +64,40 @@ class SurveyController extends Controller
 
     public function detail($id): View {
         $survey = Survey::where('id', $id)->first();
+        $survey->load('questions');
         return view('survey.detail', compact('survey'));
+    }
+
+    public function show(Survey $survey): View
+    {
+        $survey->load('questions');
+        return view('survey.detail', compact('survey'));
+    }
+
+    public function createQuestion(Survey $survey): View
+    {
+        return view('survey.questions.create', compact('survey'));
+    }
+
+    public function storeQuestion(StoreSurveyQuestionRequest $request, StoreSurveyQuestionAction $action)
+    {
+        $dto = SurveyQuestionDTO::fromRequest($request);
+        $surveyQuestion = $action->handle($dto);
+
+        return redirect()->route('survey.questions.index', $request->survey_id)->with('Success', 'Question addes successfully!');
+    }
+
+    public function editQuestion(Survey $survey, SurveyQuestion $surveyQuestion): View
+    {
+        $surveyQuestion;
+        return view('survey.questions.edit', compact('survey','surveyQuestion'));
+    }
+
+    public function destroyQuestion(SurveyQuestion $surveyQuestion)
+    {
+        $survey_id = $surveyQuestion->survey_id;
+        $surveyQuestion->delete();
+
+        return redirect()->route('survey.questions.index', $survey_id)->with('success', 'Question deleted successfully!');
     }
 }

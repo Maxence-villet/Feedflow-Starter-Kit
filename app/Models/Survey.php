@@ -21,6 +21,11 @@ class Survey extends Model
     {
         return $this->belongsTo(Organization::class);
     }
+
+    public function questions()
+    {
+        return $this->hasMany(SurveyQuestion::class);
+    }
     protected $casts = [
     ];
 }

@@ -17,5 +17,11 @@ class SurveyQuestion extends Model
         'created_at', 'updated_at'
     ];
     protected $casts = [
+        'options' => 'array',
     ];
+
+    public function survey()
+    {
+        return $this->belongsTo(Survey::class);
+    }
 }
