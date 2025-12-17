@@ -4,6 +4,7 @@ namespace App\Actions\Organization;
 use App\DTOs\OrganizationDTO;
 use App\DTOs\OrganizationMemberDTO;
 use Illuminate\Support\Facades\DB;
+use App\Models\OrganizationUser;
 
 final class StoreOrganizationMemberAction
 {
@@ -15,9 +16,14 @@ final class StoreOrganizationMemberAction
      * @return array
      * @throws \Throwable
      */
-    public function handle(OrganizationMemberDTO $dto): array
+    public function handle(OrganizationMemberDTO $dto): OrganizationUser
     {
-        return DB::transaction(function () use ($dto) {
-        });
+        $organisationMember = OrganizationUser::create([
+            'user_id' => $dto->user_id,
+            'organization_id' => $dto->organization_id,
+            'role' => $dto->role,
+        ]);
+
+        return $organisationMember;
     }
 }

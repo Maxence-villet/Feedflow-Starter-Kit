@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/organizations/delete/{organization}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
     Route::put('/organizations/update/{organization}', [OrganizationController::class, 'update'])->name('organizations.update');
     Route::get('/organizations/edit/{organization}', [OrganizationController::class, 'edit'])->name('organizations.edit');
+    Route::post('/organizations/{organization}/users', [OrganizationController::class, 'storeOrganizationUser'])->name('organizations.users.store');
+    Route::delete('/organizations/{organization}/users/{user}', [OrganizationController::class, 'destroyOrganizationUser'])->name('organizations.users.destroy');
 });
 
 Route::middleware('auth')->group(function () {

@@ -48,4 +48,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public static function getAvailableUsersInOrganization() {
+        return self::leftJoin('organization_user as OU', 'users.id', '=', 'OU.user_id')
+                        ->whereNull('OU.organization_id')
+                        ->where('users.id', '!=', auth()->user()->id)
+                        ->select('users.id', 'users.first_name', 'users.last_name', 'users.email')
+                        ->get();
+    }
 }

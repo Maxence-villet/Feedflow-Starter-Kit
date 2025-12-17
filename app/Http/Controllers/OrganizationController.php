@@ -2,24 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Organization\StoreOrganizationAction as OrganizationStoreOrganizationAction;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Organization;
+use App\Models\OrganizationUser;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Factory;
 use App\Http\Requests\Organization\StoreOrganization;
 use App\Actions\Organization\StoreOrganizationAction;
 use App\DTOs\OrganizationDTO;
+use App\DTOs\OrganizationMemberDTO;
+use App\Actions\Organization\StoreOrganizationMemberAction;
 use App\Http\Requests\Organization\DeleteOrganization;
 use App\Http\Requests\Organization\UpdateOrganization;
 use App\Actions\Organization\StoreOrganizationInSessionAction;
+use App\Http\Requests\OrganizationUser\StoreOrganizationUser;
 
 class OrganizationController extends Controller
 {
     public function index(): View {
-        //dd(auth()->user()->id());
         $organizations = Organization::all();
         return view('organizations.index', compact('organizations'));
     }
@@ -28,7 +31,7 @@ class OrganizationController extends Controller
         return view('organizations.create');
     }
 
-    public function store(StoreOrganization $request, OrganizationStoreOrganizationAction $action) {
+    public function store(StoreOrganization $request, StoreOrganizationAction $action) {
         $dto = OrganizationDTO::fromRequest($request);
 
         $organization = $action->handle($dto);
@@ -60,7 +63,40 @@ class OrganizationController extends Controller
     }
 
     public function detail(Organization $organization): View {
-        return view('organizations.detail', compact('organization'));
+        $organizationUsers = OrganizationUser::getOrganizationUsers($organization->id);
+        $users = User::getAvailableUsersInOrganization();
 
+        $user = auth()->user();
+        $user->organization_id = $organization->id;
+        $user->save();
+
+        Auth::setUser($user);
+
+        return view('organizations.detail', compact('organization', 'organizationUsers', 'users'));
+    }
+
+    public function storeOrganizationUser(StoreOrganizationUser $request, Organization $organization, StoreOrganizationMemberAction $action) {
+        $dto = OrganizationMemberDTO::fromRequest($request);
+        $organizationMember = $action->handle($dto);
+
+        return redirect()->route('organizations.detail', $organization->id)->with('success', 'User added to organization successfully!');
+    }
+
+    public function destroyOrganizationUser(Request $request, Organization $organization, User $user) {
+
+        if (!auth()->user()->can('removeOrganizationUser', $organization)) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $organizationUser = OrganizationUser::where('organization_id', $organization->id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if ($organizationUser) {
+            $organizationUser->delete();
+            return redirect()->route('organizations.detail', $organization->id)->with('success', 'User removed from organization successfully!');
+        }
+
+        return redirect()->route('organizations.detail', $organization->id)->with('error', 'User not found in organization.');
     }
 }
