@@ -10,15 +10,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Factory;
 use App\Http\Requests\Organization\StoreOrganization;
-<<<<<<< Updated upstream
 use App\Actions\StoreOrganizationAction;
 use App\DTOs\OrganizationDTO;
 use App\Http\Requests\Organization\DeleteOrganization;
 use App\Http\Requests\Organization\UpdateOrganization;
-=======
-use App\DTOs\OrganizationDTO;
-use App\Actions\StoreOrganizationAction;
->>>>>>> Stashed changes
 
 class OrganizationController extends Controller
 {
@@ -36,7 +31,6 @@ class OrganizationController extends Controller
         $dto = OrganizationDTO::fromRequest($request);
 
         $organization = $action->handle($dto);
-<<<<<<< Updated upstream
 
         return redirect()->route('organizations.index')->with('success', 'Organization created successfully!');
     }
@@ -56,21 +50,16 @@ class OrganizationController extends Controller
         $organization->update([
             'name' => $request->name,
         ]);
-=======
->>>>>>> Stashed changes
 
         return redirect()->route('organizations.index')->with('success', 'Organization updated successfully!');
     }
 
-<<<<<<< Updated upstream
     public function edit(Organization $organization): View {
         return view('organizations.edit', compact('organization'));
     }
 
     public function detail(Organization $organization): View {
         return view('organizations.detail', compact('organization'));
-=======
-        return redirect()->route('organizations.index')->with('success', 'Organization created successfully!');
->>>>>>> Stashed changes
+
     }
 }

@@ -16,11 +16,8 @@ final class OrganizationDTO
     {
         return new self(
             name: $request->name,
-<<<<<<< Updated upstream
             user_id: $request->user()->id,
-=======
-            user_id: $request->user()->id
->>>>>>> Stashed changes
+
         );
     }
 }
