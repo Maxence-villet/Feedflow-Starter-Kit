@@ -2,6 +2,7 @@
 
 namespace App\DTOs;
 
+use App\Actions\StoreOrganizationInSessionAction;
 use Illuminate\Http\Request;
 use App\Http\Requests\Survey\StoreSurveyRequest;
 use App\Http\Requests\Survey\UpdateSurveyRequest;
@@ -24,8 +25,10 @@ final class SurveyDTO
             ? filter_var($request->is_anonymous, FILTER_VALIDATE_BOOLEAN)
             : false;
 
+        $organization_id = auth()->user()->organization_id;
+
         return new self(
-            organization_id: $request->organization_id,
+            organization_id: $organization_id,
             user_id: auth()->user()->id,
             title: $request->title,
             description: $request->description,

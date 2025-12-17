@@ -4,7 +4,7 @@ namespace App\Actions\Organization;
 use App\DTOs\OrganizationDTO;
 use App\Models\Organization;
 use Illuminate\Support\Facades\DB;
-use App\Models\Organization;
+use Illuminate\Support\Facades\Auth;
 
 final class StoreOrganizationAction
 {
@@ -17,11 +17,17 @@ final class StoreOrganizationAction
      */
     public function handle(OrganizationDTO $dto): Organization
     {
-        $organisation = Organization::create([
+        $organization = Organization::create([
             'name' => $dto->name,
             'user_id' => $dto->user_id
         ]);
 
-        return $organisation;
+        $user = auth()->user();
+        $user->organization_id = $organization->id;
+        $user->save();
+
+        Auth::setUser($user);
+
+        return $organization;
     }
 }

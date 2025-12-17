@@ -12,6 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+
             $table->id();
             $table->string('last_name');
             $table->string('first_name');
@@ -20,6 +22,8 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreignId('organization_id')->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

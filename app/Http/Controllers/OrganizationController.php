@@ -10,10 +10,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Factory;
 use App\Http\Requests\Organization\StoreOrganization;
-use App\Actions\StoreOrganizationAction;
+use App\Actions\Organization\StoreOrganizationAction;
 use App\DTOs\OrganizationDTO;
 use App\Http\Requests\Organization\DeleteOrganization;
 use App\Http\Requests\Organization\UpdateOrganization;
+use App\Actions\Organization\StoreOrganizationInSessionAction;
 
 class OrganizationController extends Controller
 {

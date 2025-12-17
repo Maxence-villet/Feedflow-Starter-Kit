@@ -5,15 +5,15 @@
 </head>
 <body>
     <h1>Surveys List</h1>
-    
+
     <a href="{{ route('survey.create') }}">Create New Survey</a>
-    
+
     @if(session('success'))
         <div style="color: green; margin: 10px 0;">
             {{ session('success') }}
         </div>
     @endif
-    
+
     @if($survey->isEmpty())
         <p>No surveys found.</p>
     @else
@@ -34,12 +34,13 @@
                         <td>{{ $item->start_date }}</td>
                         <td>{{ $item->end_date }}</td>
                         <td>{{ $item->is_anonymous ? 'Yes' : 'No' }}</td>
+                        <td>{{ $item->organization_id }}</td>
                         <td>
                             <a href="{{ route('survey.detail', $item) }}">View</a>
                             <a href="{{ route('survey.edit', $item) }}">Edit</a>
-                            <form 
-                                action="{{ route('survey.destroy', $item) }}" 
-                                method="POST" 
+                            <form
+                                action="{{ route('survey.destroy', $item) }}"
+                                method="POST"
                                 style="display: inline;"
                                 onsubmit="return confirm('Are you sure?')"
                             >
@@ -53,7 +54,7 @@
             </tbody>
         </table>
     @endif
-    
+
     <div style="margin-top: 20px;">
         <a href="{{ route('dashboard') }}">Back to Dashboard</a>
     </div>
