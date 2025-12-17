@@ -6,6 +6,8 @@ use App\Actions\Organization\StoreOrganizationAction as OrganizationStoreOrganiz
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Organization;
+use App\Models\OrganizationUser;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Factory;
@@ -18,7 +20,6 @@ use App\Http\Requests\Organization\UpdateOrganization;
 class OrganizationController extends Controller
 {
     public function index(): View {
-        //dd(auth()->user()->id());
         $organizations = Organization::all();
         return view('organizations.index', compact('organizations'));
     }
@@ -59,6 +60,24 @@ class OrganizationController extends Controller
     }
 
     public function detail(Organization $organization): View {
-        return view('organizations.detail', compact('organization'));
+        $organizationUsers = OrganizationUser::getOrganizationUsers($organization->id);
+        $users = User::getAvailableUsersInOrganization();
+
+        return view('organizations.detail', compact('organization', 'organizationUsers', 'users'));
+    }
+
+    public function storeOrganizationUser(Request $request, Organization $organization) {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'role' => 'required|string|max:255',
+        ]);
+
+        OrganizationUser::create([
+            'user_id' => $request->input('user_id'),
+            'organization_id' => $organization->id,
+            'role' => $request->input('role'),
+        ]);
+
+        return redirect()->route('organizations.detail', $organization->id)->with('success', 'User added to organization successfully!');
     }
 }
