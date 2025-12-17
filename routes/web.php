@@ -42,4 +42,5 @@ Route::get('/survey', [SurveyController::class, 'index'])->name('survey.index');
     Route::get('/survey/edit/{survey}', [SurveyController::class, 'edit'])->name('survey.edit');
 });
 
+Route::get('/public/survey/{id}', [SurveyController::class, 'showPublicById'])->name('survey.public.id');
 require __DIR__.'/auth.php';
