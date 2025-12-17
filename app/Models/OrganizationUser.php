@@ -14,4 +14,11 @@ class OrganizationUser extends Model
     protected $fillable = [ 'id', 'user_id', 'organization_id', 'role', 'created_at', 'updated_at' ];
     protected $casts = [
     ];
+
+    public static function getOrganizationUsers($organizationId) {
+        return self::leftJoin('users', 'organization_user.user_id', '=', 'users.id')
+                        ->where('organization_user.organization_id', $organizationId)
+                        ->select('users.id', 'users.first_name', 'users.last_name', 'users.email', 'organization_user.role')
+                        ->get();
+    }
 }
