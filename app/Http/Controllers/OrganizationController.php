@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Organization\StoreOrganizationAction as OrganizationStoreOrganizationAction;
+use App\Actions\Organization\StoreOrganizationAction;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Organization;
@@ -12,11 +12,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Factory;
 use App\Http\Requests\Organization\StoreOrganization;
-use App\Actions\StoreOrganizationAction;
 use App\DTOs\OrganizationDTO;
+use App\DTOs\OrganizationMemberDTO;
+use App\Actions\Organization\StoreOrganizationMemberAction;
 use App\Http\Requests\Organization\DeleteOrganization;
 use App\Http\Requests\Organization\UpdateOrganization;
-
+use App\Http\Requests\OrganizationUser\StoreOrganizationUser;
 class OrganizationController extends Controller
 {
     public function index(): View {
@@ -66,18 +67,28 @@ class OrganizationController extends Controller
         return view('organizations.detail', compact('organization', 'organizationUsers', 'users'));
     }
 
-    public function storeOrganizationUser(Request $request, Organization $organization) {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'role' => 'required|string|max:255',
-        ]);
-
-        OrganizationUser::create([
-            'user_id' => $request->input('user_id'),
-            'organization_id' => $organization->id,
-            'role' => $request->input('role'),
-        ]);
+    public function storeOrganizationUser(StoreOrganizationUser $request, Organization $organization, StoreOrganizationMemberAction $action) {
+        $dto = OrganizationMemberDTO::fromRequest($request);
+        $organizationMember = $action->handle($dto);
 
         return redirect()->route('organizations.detail', $organization->id)->with('success', 'User added to organization successfully!');
+    }
+
+    public function destroyOrganizationUser(Request $request, Organization $organization, User $user) {
+
+        if (!auth()->user()->can('removeOrganizationUser', $organization)) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $organizationUser = OrganizationUser::where('organization_id', $organization->id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if ($organizationUser) {
+            $organizationUser->delete();
+            return redirect()->route('organizations.detail', $organization->id)->with('success', 'User removed from organization successfully!');
+        }
+
+        return redirect()->route('organizations.detail', $organization->id)->with('error', 'User not found in organization.');
     }
 }
