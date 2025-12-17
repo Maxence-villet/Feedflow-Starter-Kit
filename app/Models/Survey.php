@@ -16,6 +16,11 @@ class Survey extends Model
         'title', 'description', 'start_date', 'end_date', 'is_anonymous',
         'created_at', 'updated_at'
     ];
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
     protected $casts = [
     ];
 }

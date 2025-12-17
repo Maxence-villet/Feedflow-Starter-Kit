@@ -22,13 +22,15 @@ class SurveyController extends Controller
     public function create(): View
     {
         return view('survey.create');
-    }    
+    }
 
     public function store(StoreSurveyRequest $request, StoreSurveyAction $action)
     {
         $dto = SurveyDTO::fromRequest($request);
 
         $survey = $action->handle($dto);
+
+        $survey->organization;
 
         return redirect()->route('survey.index')->with('success', 'Survey created successfully!');
     }
@@ -58,6 +60,6 @@ class SurveyController extends Controller
 
     public function detail($id): View {
         $survey = Survey::where('id', $id)->first();
-        return view('survey.detail', compact('survey'));   
+        return view('survey.detail', compact('survey'));
     }
 }

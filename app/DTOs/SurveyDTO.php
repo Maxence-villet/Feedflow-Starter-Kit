@@ -23,9 +23,9 @@ final class SurveyDTO
         $isAnonymous = $request->has('is_anonymous')
             ? filter_var($request->is_anonymous, FILTER_VALIDATE_BOOLEAN)
             : false;
-        
+
         return new self(
-            organization_id: 1,
+            organization_id: $request->organization_id,
             user_id: auth()->user()->id,
             title: $request->title,
             description: $request->description,

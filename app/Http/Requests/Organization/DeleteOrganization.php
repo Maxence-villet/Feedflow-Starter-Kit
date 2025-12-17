@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Organization;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Policies\OrganizationPolicy;
 
 class DeleteOrganization extends FormRequest
 {
@@ -22,7 +23,7 @@ class DeleteOrganization extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            // this request is unessesary cause the data are send from the url
         ];
     }
 }

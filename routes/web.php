@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\OrganizationController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,7 +21,17 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/survey', [SurveyController::class, 'index'])->name('survey.index');
+    Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');
+    Route::post('/organizations', [OrganizationController::class, 'store'])->name('organizations.store');
+    Route::get('/organizations', [OrganizationController::class, 'index'])->name('organizations.index');
+    Route::get('/organizations/detail/{organization}', [OrganizationController::class, 'detail'])->name('organizations.detail');
+    Route::delete('/organizations/delete/{organization}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
+    Route::put('/organizations/update/{organization}', [OrganizationController::class, 'update'])->name('organizations.update');
+    Route::get('/organizations/edit/{organization}', [OrganizationController::class, 'edit'])->name('organizations.edit');
+});
+
+Route::middleware('auth')->group(function () {
+Route::get('/survey', [SurveyController::class, 'index'])->name('survey.index');
     Route::get('/survey/create', [SurveyController::class, 'create'])->name('survey.create');
     Route::post('/survey', [SurveyController::class, 'store'])->name('survey.store');
     Route::get('/survey/detail/{survey}', [SurveyController::class, 'detail'])->name('survey.detail');

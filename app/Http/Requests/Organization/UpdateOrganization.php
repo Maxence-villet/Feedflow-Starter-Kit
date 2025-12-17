@@ -11,7 +11,8 @@ class UpdateOrganization extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        $organization = $this->route('organization');
+        return auth()->user()->can('update', $organization);
     }
 
     /**
@@ -22,7 +23,16 @@ class UpdateOrganization extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'min:3', 'max:30', 'string'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Le nom de l\'organisation doit être obligatoire',
+            'name.min' => 'Le nom de l\'organisation doit avoir un minimum de 3 caractères',
+            'name.max' => 'Le nom de l\'organisation doit avoir un maximum de 30 caractères',
         ];
     }
 }
