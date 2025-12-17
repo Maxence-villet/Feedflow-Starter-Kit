@@ -58,8 +58,13 @@ class SurveyController extends Controller
         return view('survey.edit', compact('survey'));
     }
 
-    public function detail($id): View {
-        $survey = Survey::where('id', $id)->first();
-        return view('survey.detail', compact('survey'));
-    }
+    public function detail($id): View { 
+        $survey = Survey::where('id', $id)->firstOrFail(); 
+        $publicLink = route('survey.public.id', ['id' => $survey->id]); 
+        return view('survey.detail', compact('survey', 'publicLink')); 
+    } 
+    
+    public function showPublicById($id): View { 
+        $survey = Survey::where('id', $id)->firstOrFail(); 
+        return view('survey.public.show', compact('survey')); }
 }
