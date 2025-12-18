@@ -4,9 +4,13 @@ namespace App\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Events\DailyAnswersThresholdReached;
+use App\Mail\DailyReportMail;
+use Illuminate\Support\Facades\Mail;
 
-class SendDailyReport
+class SendDailyReport implements ShouldQueue
 {
+    use InteractsWithQueue;
     /**
      * Create the event listener.
      */
@@ -18,8 +22,12 @@ class SendDailyReport
     /**
      * Handle the event.
      */
-    public function handle(object $event): void
+    public function handle(DailyAnswersThresholdReached $event): void
     {
-        //
+        Mail::to($event->email)->send(
+            new DailyReportMail($event->survey)
+        );
+        $event->survey->total_daily_answers = 0;
+        $event->survey->save();
     }
 }

@@ -11,7 +11,7 @@ class StoreSurveyAnswerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,20 @@ class StoreSurveyAnswerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'survey_id' => ['required', 'integer', 'exists:surveys,id'],
+            'answers' => ['required', 'array', 'min:1'],
+            'answers.*' => ['required', 'string'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'survey_id.required' => 'L\'ID du sondage est requis.',
+            'survey_id.exists' => 'Le sondage sélectionné n\'existe pas.',
+            'answers.required' => 'Veuillez répondre aux questions.',
+            'answers.min' => 'Veuillez répondre au moins à une question.',
+            'answers.*.required' => 'Cette question est requise.',
         ];
     }
 }

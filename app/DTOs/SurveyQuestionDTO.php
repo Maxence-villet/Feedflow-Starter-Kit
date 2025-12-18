@@ -16,20 +16,18 @@ final class SurveyQuestionDTO
 
     public static function fromRequest(StoreSurveyQuestionRequest $request): self
     {
-        $options = null;
 
-        if(in_array($options, ['radio', 'checkbox', 'scale']))
+        $type = $request->question_type;
+        $options = [];
+
+        if($type === 'scale')
         {
-            if($request->question_type === 'scale')
-            {
-                $options = [];
-                for($i=1;i<=10; $i++)
-                {
-                    $options[] = (string)$i;
-                }
-            } elseif($request->has('options') && !empty($request->options)) {
-                $options = array_filter(array_map('trim', explode("\n", $request->options)));
-            }
+            $options = range(1, 10);
+        } elseif ($type === 'radio' || $type === 'checkbox')
+        {
+            $options = explode("\n", $request->options ?? '');
+            $options = array_map('trim', $options);
+            $options = array_filter($options);
         }
 
         $options = $options ?? [];
@@ -38,7 +36,7 @@ final class SurveyQuestionDTO
             survey_id: $request->survey_id,
             title: $request->title,
             question_type: $request->question_type,
-            options: $options,
+            options: array_values($options),
         );
     }
 }

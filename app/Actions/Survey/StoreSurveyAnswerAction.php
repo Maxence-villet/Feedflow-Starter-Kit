@@ -14,13 +14,24 @@ final class StoreSurveyAnswerAction
      * @param SurveyDTO $dto
      * @return array
      */
-    public function handle(SurveyAnswerDTO $dto): SurveyAnswer
+    public function handle(SurveyAnswerDTO $dto): Array
     {
-        $answer = SurveyAnswer::create([
-            'survey_id' => $dto->survey_id,
-            'survey_question_id' => $dto->survey_question_id,
-            'user_id' => $dto->user_id,
-            'answer' => $dto->answer,
-        ])
+        
+        $answers= [];
+        $timestamp = now();
+
+        foreach($dto->answers as $questionId => $answerValue)
+        {
+            $answers[] = [
+                'survey_id' => $dto->survey_id,
+                'survey_question_id' => $questionId,
+                'user_id' => $dto->user_id,
+                'answer' => $answerValue,
+                'created_at' => $timestamp,
+                'updated_at' => $timestamp,
+            ];
+        }
+        $answersInserted = SurveyAnswer::insert($answers);
+        return $answers;     
     }
 }
