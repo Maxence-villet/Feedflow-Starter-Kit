@@ -4,6 +4,8 @@ namespace App\Actions\Survey;
 use App\DTOs\SurveyAnswerDTO;
 use Illuminate\Support\Facades\DB;
 use App\Models\SurveyAnswer;
+use App\Models\Survey;
+use App\Events\SurveyAnswerSubmitted;
 
 final class StoreSurveyAnswerAction
 {
@@ -32,6 +34,13 @@ final class StoreSurveyAnswerAction
             ];
         }
         $answersInserted = SurveyAnswer::insert($answers);
+        $survey = Survey::find($dto->survey_id);
+        if ($survey->notification) {
+            event(new SurveyAnswerSubmitted($survey, $dto->user_id));
+        }
+
+        $survey->total_daily_answers = $survey->total_daily_answers + 1;
+        $survey->save();
         return $answers;     
     }
 }
