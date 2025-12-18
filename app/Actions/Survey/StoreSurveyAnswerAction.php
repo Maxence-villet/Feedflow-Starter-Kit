@@ -32,6 +32,7 @@ final class StoreSurveyAnswerAction
             ];
         }
         $answersInserted = SurveyAnswer::insert($answers);
+        dd($answersInserted);
         return $answers;     
     }
 }

@@ -128,14 +128,6 @@ class SurveyController extends Controller
         return redirect()->route('survey.questions.index', $survey_id)->with('success', 'Question deleted successfully!');
     }
 
-<<<<<<< Updated upstream
-    public function swapNotification(Survey $survey)
-    {
-        $survey->notification = !$survey->notification;
-        $survey->save();
-
-        return redirect()->route('survey.index');
-=======
 
     public function storeAnswer(StoreSurveyAnswerRequest $request, StoreSurveyAnswerAction $action)
     {
@@ -148,6 +140,13 @@ class SurveyController extends Controller
     public function thankyou(): View
     {
             return view('survey.thankyou');
->>>>>>> Stashed changes
+    }
+
+    public function swapNotification(Survey $survey)
+    {
+        $survey->notification = !$survey->notification;
+        $survey->save();
+
+        return redirect()->route('survey.index');
     }
 }
