@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Models\Survey;
+use App\Events\SurveyClosed;
 
 class CheckForSurveyToClose extends Command
 {
@@ -18,13 +20,23 @@ class CheckForSurveyToClose extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Check for surveys to close if their end date has passed';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        //
+        $this->info('Command executed successfully.');
+
+        $surveys = Survey::getSurveysToClose();
+
+        foreach ($surveys as $survey) {
+            event(new SurveyClosed($survey));
+            $survey->is_active = false;
+            $survey->save();
+        }
+
+        return Command::SUCCESS;
     }
 }

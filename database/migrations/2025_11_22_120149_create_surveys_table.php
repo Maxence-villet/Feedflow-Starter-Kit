@@ -23,6 +23,7 @@ return new class extends Migration
             $table->dateTime('end_date');
             $table->boolean('notification')->default(true);
             $table->boolean('is_anonymous')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->string('total_daily_answers')->default('0');
             $table->timestamps();
 

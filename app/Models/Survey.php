@@ -28,4 +28,10 @@ class Survey extends Model
     }
     protected $casts = [
     ];
+
+    public static function getSurveysToClose() {
+        return self::where('is_active', true)
+                    ->where('end_date', '<', now())
+                    ->get();
+    }
 }

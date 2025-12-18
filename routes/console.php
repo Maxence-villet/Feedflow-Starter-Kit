@@ -9,4 +9,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('app:send-survey-daily-reports')->dailyAt('08:00');
+Schedule::command('app:check-for-survey-to-close')->dailyAt('00:01');
 

@@ -7,6 +7,8 @@ use App\Events\SurveyAnswerSubmitted;
 use App\Listeners\SendNewAnswerNotification;
 use App\Events\DailyAnswersThresholdReached;
 use App\Listeners\SendDailyReport;
+use App\Events\SurveyClosed;
+use App\Listeners\SendFinalReportOnClose;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
 
         DailyAnswersThresholdReached::class => [
             SendDailyReport::class,
+        ],
+
+        SurveyClosed::class => [
+            SendFinalReportOnClose::class,
         ],
     ];
     /**
