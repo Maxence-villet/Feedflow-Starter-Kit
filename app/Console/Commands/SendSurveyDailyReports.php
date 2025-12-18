@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Events\DailyAnswersThresholdReached;
+use App\Models\Survey;
 
 class SendSurveyDailyReports extends Command
 {
@@ -25,6 +27,15 @@ class SendSurveyDailyReports extends Command
      */
     public function handle(): int
     {
-        return 0;
+        $this->info('Command executed successfully.');
+
+
+        $surveys = Survey::all();
+
+        foreach ($surveys as $survey) {
+            event(new DailyAnswersThresholdReached($survey));
+        }
+
+        return Command::SUCCESS;
     }
 }

@@ -5,6 +5,8 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\DailyAnswersThresholdReached;
+use App\Mail\DailyReportMail;
+use Illuminate\Support\Facades\Mail;
 
 class SendDailyReport implements ShouldQueue
 {
@@ -22,8 +24,8 @@ class SendDailyReport implements ShouldQueue
      */
     public function handle(DailyAnswersThresholdReached $event): void
     {
-        Mail::to('admin@example.com')->send(
-            new ArticlePublishedMail($event->article)
+        Mail::to($event->email)->send(
+            new DailyReportMail($event->survey)
         );
     }
 }
