@@ -27,5 +27,7 @@ class SendDailyReport implements ShouldQueue
         Mail::to($event->email)->send(
             new DailyReportMail($event->survey)
         );
+        $event->survey->total_daily_answers = 0;
+        $event->survey->save();
     }
 }

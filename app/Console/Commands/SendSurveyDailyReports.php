@@ -33,7 +33,9 @@ class SendSurveyDailyReports extends Command
         $surveys = Survey::all();
 
         foreach ($surveys as $survey) {
-            event(new DailyAnswersThresholdReached($survey));
+            if ($survey->total_daily_answers >= 10) {
+                event(new DailyAnswersThresholdReached($survey));
+            }
         }
 
         return Command::SUCCESS;

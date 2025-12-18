@@ -4,6 +4,8 @@
         Daily Report
     </h1>
 
+    <p>The Survey <strong>{{ $survey->title }}</strong> has received <strong>{{ $survey->total_daily_answers }}</strong> new answers since the last 24h.</p>
+
     <p style="margin-top: 25px;">
         Please log in to your administration panel to review the details and analytics associated with this submission.
     </p>
