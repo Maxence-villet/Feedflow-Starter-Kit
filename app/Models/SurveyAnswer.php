@@ -18,4 +18,13 @@ class SurveyAnswer extends Model
     ];
     protected $casts = [
     ];
+    public function surveyQuestion()
+    {
+        return $this->belongsTo(SurveyQuestion::class);
+    }
+
+    public function survey()
+    {
+        return $this->belongsTo(Survey::class);
+    }
 }

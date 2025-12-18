@@ -1,72 +1,66 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Surveys</title>
-</head>
-<body>
-    <h1>Surveys List</h1>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
+            {{ __('Surveys List') }}
+        </h2>
+    </x-slot>
 
-    <a href="{{ route('survey.create') }}">Create New Survey</a>
+    <div class="py-12">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg p-6">
 
-    @if(session('success'))
-        <div style="color: green; margin: 10px 0;">
-            {{ session('success') }}
+                <div class="mb-6">
+                    <a href="{{ route('survey.create') }}" class="text-gray-800 underline">Create New Survey</a>
+                </div>
+
+                @if(session('success'))
+                    <div class="mb-4 text-gray-500">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if($survey->isEmpty())
+                    <p class="text-gray-500">No surveys found.</p>
+                @else
+                    <table class="w-full border-collapse border border-gray-500 text-left align-middle">
+                        <thead>
+                            <tr class="border-b border-gray-500">
+                                <th class="py-2 text-gray-800">Title</th>
+                                <th class="py-2 text-gray-800">Start Date</th>
+                                <th class="py-2 text-gray-800">End Date</th>
+                                <th class="py-2 text-gray-800">Anonymous</th>
+                                <th class="py-2 text-gray-800">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($survey as $item)
+                                <tr class="border-b border-gray-500">
+                                    <td class="py-3 text-gray-800">{{ $item->title }}</td>
+                                    <td class="py-3 text-gray-500">{{ $item->start_date }}</td>
+                                    <td class="py-3 text-gray-500">{{ $item->end_date }}</td>
+                                    <td class="py-3 text-gray-500">{{ $item->is_anonymous ? 'Yes' : 'No' }}</td>
+                                    <td class="py-3">
+                                        <div class="flex gap-4">
+                                            <a href="{{ route('survey.detail', $item) }}" class="text-gray-800 underline">View</a>
+                                            <a href="{{ route('survey.edit', $item) }}" class="text-gray-500 underline">Edit</a>
+                                            <form action="{{ route('survey.destroy', $item) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-gray-500 underline">Delete</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+
+                <div class="mt-6">
+                    <a href="{{ route('organizations.index') }}"><- Back to Organizations</a>
+                </div>
+
+            </div>
         </div>
-    @endif
-
-    @if($survey->isEmpty())
-        <p>No surveys found.</p>
-    @else
-        <table border="1" style="width: 100%; margin-top: 20px;">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Anonymous</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($survey as $item)
-                    <tr>
-                        <td>{{ $item->title }}</td>
-                        <td>{{ $item->start_date }}</td>
-                        <td>{{ $item->end_date }}</td>
-                        <td>{{ $item->is_anonymous ? 'Yes' : 'No' }}</td>
-                        <td>{{ $item->organization_id }}</td>
-                        <td>
-                            <a href="{{ route('survey.detail', $item) }}">View</a>
-                            <a href="{{ route('survey.edit', $item) }}">Edit</a>
-                            <form
-                                action="{{ route('survey.destroy', $item) }}"
-                                method="POST"
-                                style="display: inline;"
-                                onsubmit="return confirm('Are you sure?')"
-                            >
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">Delete</button>
-                            </form>
-                            <form 
-                                action="{{ route('survey.answers.store', $item) }}" 
-                                method="POST" 
-                                style="display: inline;"
-                            >
-                                @csrf
-                                <button type="submit">
-                                    {{ $item->notification ? 'Disable' : 'Enable' }} Notifications
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
-
-    <div style="margin-top: 20px;">
-        <a href="{{ route('dashboard') }}">Back to Dashboard</a>
     </div>
-</body>
-</html>
+</x-app-layout>

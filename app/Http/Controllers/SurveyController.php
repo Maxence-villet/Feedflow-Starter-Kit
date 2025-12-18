@@ -6,14 +6,18 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Models\Survey;
 use App\Models\SurveyQuestion;
+use App\Models\SurveyAnswer;
 use App\Http\Requests\Survey\StoreSurveyRequest;
 use App\Http\Requests\Survey\UpdateSurveyRequest;
 use App\Http\Requests\Survey\StoreSurveyQuestionRequest;
+use App\Http\Requests\Survey\StoreSurveyAnswerRequest;
 use App\DTOs\SurveyDTO;
 use App\DTOs\SurveyQuestionDTO;
+use App\DTOs\SurveyAnswerDTO;
 use App\Actions\Survey\StoreSurveyAction;
 use App\Actions\Survey\UpdateSurveyAction;
 use App\Actions\Survey\StoreSurveyQuestionAction;
+use App\Actions\Survey\StoreSurveyAnswerAction;
 
 class SurveyController extends Controller
 {
@@ -79,6 +83,7 @@ class SurveyController extends Controller
         try {
             $id = hex2bin($hashedId) - 5555;
             $survey = Survey::where('id', $id)->firstOrFail(); 
+
             return view('survey.public.show', compact('survey'));
         } catch (\Exception $e) {
             abort(404);
@@ -121,6 +126,20 @@ class SurveyController extends Controller
         $surveyQuestion->delete();
 
         return redirect()->route('survey.questions.index', $survey_id)->with('success', 'Question deleted successfully!');
+    }
+
+
+    public function storeAnswer(StoreSurveyAnswerRequest $request, StoreSurveyAnswerAction $action)
+    {
+        $dto = SurveyAnswerDTO::fromRequest($request);
+        $surveyAnswer = $action->handle($dto);
+        
+        return redirect()->route('survey.thankyou')->with('success', 'Réponses enregistrées avec succès');
+    }
+
+    public function thankyou(): View
+    {
+            return view('survey.thankyou');
     }
 
     public function swapNotification(Survey $survey)

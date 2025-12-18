@@ -14,15 +14,23 @@
                 </div>
 
                 <div x-data="{ showSelect: false }" class="mt-6">
-                    <button 
-                        type="button"
-                        @click="showSelect = !showSelect" 
-                        class="bg-gray-500 text-white font-bold py-2 px-4 rounded mb-4 flex items-center flex-row gap-4"
-                    >
-                        <svg x-show="!showSelect" class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        <svg x-show="showSelect" class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        {{ __('Add User') }}
-                    </button>
+                    <div class="flex flex-row gap-4 mb-4">
+                        <button 
+                            type="button"
+                            @click="showSelect = !showSelect" 
+                            class="bg-gray-500 text-white font-bold py-2 px-4 rounded mb-4 flex items-center flex-row gap-4"
+                        >
+                            <svg x-show="!showSelect" class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            <svg x-show="showSelect" class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            {{ __('Add User') }}
+                        </button>
+
+                        <button type="button" class="border font-bold py-2 px-4 rounded mb-4">
+                            <a href="{{ route('survey.index') }}">
+                                {{ __('Details Survey') }}
+                            </a>
+                        </button>
+                    </div>
 
                     <div x-show="showSelect" x-transition class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                         <form action="{{ route('organizations.users.store', $organization) }}" method="POST">

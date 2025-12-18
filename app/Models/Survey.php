@@ -26,6 +26,12 @@ class Survey extends Model
     {
         return $this->hasMany(SurveyQuestion::class);
     }
+
+    public function answer()
+    {
+        return $this->hasMany(SurveyAnwser::class);
+    }
+
     protected $casts = [
     ];
 
