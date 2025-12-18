@@ -17,13 +17,38 @@
                         </div>
                     @endif
 
-                    <div style="margin: 20px 0;">
-                        <h2>Survey Information</h2>
-                        <p><strong>Description:</strong> {{ $survey->description }}</p>
-                        <p><strong>Start Date:</strong> {{ $survey->start_date }}</p>
-                        <p><strong>End Date:</strong> {{ $survey->end_date }}</p>
-                        <p><strong>Anonymous:</strong> {{ $survey->is_anonymous ? 'Yes' : 'No' }}</p>
-                    </div>
+    <div>
+        <p>
+            Partagez ce lien :
+        </p>
+
+        <div>
+            <input 
+                type="text" 
+                value="{{ $publicLink }}" 
+                readonly 
+                id="public-survey-link"
+            >
+            <button 
+                type="button"
+                onclick="
+                    navigator.clipboard.writeText(document.getElementById('public-survey-link').value); 
+                    alert('Lien copié !');
+                "
+            >
+                Copier
+            </button>
+        </div>
+    </div>
+    <div>
+        <h2>{{ $survey->title }}</h2>
+    <div style="margin: 20px 0;">
+        <h2>Informations du sondage</h2>
+        <p><strong>Description:</strong> {{ $survey->description }}</p>
+        <p><strong>Date de début:</strong> {{ $survey->start_date }}</p>
+        <p><strong>Date de fin:</strong> {{ $survey->end_date }}</p>
+        <p><strong>Anonyme:</strong> {{ $survey->is_anonymous ? 'Oui' : 'Non' }}</p>
+    </div>
 
                     <div style="margin-top: 20px;">
                         <a href="{{ route('survey.edit', $survey) }}">Modify Survey</a>
@@ -119,6 +144,5 @@
             </div>
         </div>
     </div>
-</x-app-layout>
-
-
+</body>
+<x-app-layout>
