@@ -26,6 +26,9 @@ docker exec -it feedflow-app bash -c "
 
 # 6. Ajouter les données par défaut dans la base de données
 docker exec -it feedflow-app php artisan db:seed
+
+# Facultatif -> pour lancer la queue des mail
+docker exec -it feedflow-app php artisan queue:work
 ```
 
 ## Liens utiles

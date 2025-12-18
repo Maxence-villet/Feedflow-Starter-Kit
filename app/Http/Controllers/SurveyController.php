@@ -122,4 +122,12 @@ class SurveyController extends Controller
 
         return redirect()->route('survey.questions.index', $survey_id)->with('success', 'Question deleted successfully!');
     }
+
+    public function swapNotification(Survey $survey)
+    {
+        $survey->notification = !$survey->notification;
+        $survey->save();
+
+        return redirect()->route('survey.index');
+    }
 }

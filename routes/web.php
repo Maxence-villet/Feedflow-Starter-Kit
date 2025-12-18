@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/survey/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');
     Route::put('/survey/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
     Route::get('/survey/edit/{survey}', [SurveyController::class, 'edit'])->name('survey.edit');
-
+    Route::post('/survey/notify/{survey}', [SurveyController::class, 'swapNotification'])->name('survey.answers.store');
     Route::get('/survey/{survey}/questions', [SurveyController::class, 'show'])->name('survey.questions.index');
     Route::get('/survey/{survey}/questions/create', [SurveyController::class, 'createQuestion'])->name('survey.questions.create');
     Route::post('/survey/{survey}/questions', [SurveyController::class, 'storeQuestion'])->name('survey.questions.store');
