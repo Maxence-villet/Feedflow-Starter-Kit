@@ -49,4 +49,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/survey/questions/{surveyQuestion}', [SurveyController::class, 'destroyQuestion'])->name('survey.questions.destroy');
 });
 
+Route::get('/public/survey/{id}', [SurveyController::class, 'showPublicById'])->name('survey.public.id');
 require __DIR__.'/auth.php';

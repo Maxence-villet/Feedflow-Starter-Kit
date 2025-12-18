@@ -14,6 +14,31 @@
         </div>
     @endif
 
+    <div>
+        <p>
+            Partagez ce lien :
+        </p>
+
+        <div>
+            <input 
+                type="text" 
+                value="{{ $publicLink }}" 
+                readonly 
+                id="public-survey-link"
+            >
+            <button 
+                type="button"
+                onclick="
+                    navigator.clipboard.writeText(document.getElementById('public-survey-link').value); 
+                    alert('Lien copié !');
+                "
+            >
+                Copier
+            </button>
+        </div>
+    </div>
+    <div>
+        <h2>{{ $survey->title }}</h2>
     <div style="margin: 20px 0;">
         <h2>Informations du sondage</h2>
         <p><strong>Description:</strong> {{ $survey->description }}</p>
