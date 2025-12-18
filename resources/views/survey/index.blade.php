@@ -48,6 +48,12 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="text-gray-500 underline">Delete</button>
                                             </form>
+                                            <form action="{{ route('survey.notif.swap', $item) }}" method="POST" >
+                                                @csrf
+                                                <button type="submit" class="text-gray-500 underline">
+                                                    {{ $item->notification ? 'Disable Notifications' : 'Enable Notifications' }}
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
