@@ -88,7 +88,12 @@ class SurveyController extends Controller
     public function show(Survey $survey): View
     {
         $survey->load('questions');
-        return view('survey.detail', compact('survey'));
+        
+        $hashedId = bin2hex($survey->id + 5555); 
+        $publicLink = route('survey.public.id', ['id' => $hashedId]); 
+
+
+        return view('survey.detail', compact('survey', 'publicLink'));
     }
 
     public function createQuestion(Survey $survey): View
